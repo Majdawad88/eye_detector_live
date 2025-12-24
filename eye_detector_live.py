@@ -1,5 +1,24 @@
 # git clone
-Step 2.5: Cascade classifier for eye detection
+# Grayscale for Haar detection (equalize helps in variable lighting)
+        gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+        gray = cv2.equalizeHist(gray)
+
+        # Detect eyes; tune these params for your scene
+        eyes = eye_cascade.detectMultiScale(
+            gray,
+            scaleFactor=1.3,
+            minNeighbors=5,
+            flags=cv2.CASCADE_SCALE_IMAGE,
+            minSize=(20, 20)
+        )
+
+        # Draw eye boxes
+        for (x, y, w, h) in eyes:
+            cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 0, 255), 2)
+
+        # (Optional) overlay count
+        cv2.putText(frame, f"Eyes: {len(eyes)}", (10, 30),
+                    cv2.FONT_HERSHEYStep 2.5: Cascade classifier for eye detection
 
 from picamera2 import Picamera2
 import cv2, time
@@ -22,26 +41,7 @@ try:
         # Capture frame (RGB) and convert to BGR for OpenCV
         frame = picam2.capture_array()
 
-        # Grayscale for Haar detection (equalize helps in variable lighting)
-        gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-        gray = cv2.equalizeHist(gray)
-
-        # Detect eyes; tune these params for your scene
-        eyes = eye_cascade.detectMultiScale(
-            gray,
-            scaleFactor=1.3,
-            minNeighbors=5,
-            flags=cv2.CASCADE_SCALE_IMAGE,
-            minSize=(20, 20)
-        )
-
-        # Draw eye boxes
-        for (x, y, w, h) in eyes:
-            cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 0, 255), 2)
-
-        # (Optional) overlay count
-        cv2.putText(frame, f"Eyes: {len(eyes)}", (10, 30),
-                    cv2.FONT_HERSHEY_SIMPLEX, 1.0, (0, 255, 0), 2)
+        _SIMPLEX, 1.0, (0, 255, 0), 2)
 
         cv2.imshow("", frame)
 
