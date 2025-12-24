@@ -1,4 +1,4 @@
-# git clone 
+# git clone https://github.com/Majdawad88/eye_detector_live.git
 from picamera2 import Picamera2
 import cv2, time, signal, sys
 import numpy as np
